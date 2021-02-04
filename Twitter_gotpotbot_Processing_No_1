@@ -1,5 +1,5 @@
-float add=0;
-float r;
+float add=0;//角度を足していく
+float r;//ellipseの大きさ
 void setup() {
   size(600, 600);
 }
@@ -12,7 +12,7 @@ void draw() {
     rotate(i/2);
     strokeWeight(10);
     float c1, c2, c3;
-    c1=150+abs(100*cos(add*20));
+    c1=150+abs(100*cos(add*20));//色は三角関数で制御
     c2=abs(50*sin(add*10))+200;
     c3=abs(70*sin(add*10))+180;
     stroke(c1, c2, c3);
