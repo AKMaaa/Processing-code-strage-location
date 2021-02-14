@@ -1,0 +1,44 @@
+float x=0;
+float y=0;
+float r=250;//大きさの調整
+float add_r=0;
+void setup() {
+  size(1280, 740, P3D);
+  background(#DCFFB4);
+}
+
+void draw() {
+  push();
+  noStroke();
+  // 動きをフェードさせる
+  // fill(0, 9);
+  // rect(0, 0, width, height);
+  
+  translate(width/2, height/2);
+  rotateY(frameCount*0.01);
+  rotateZ(frameCount*0.01);
+  rotateX(-frameCount*0.01);
+  GG(0,0);
+  pop();
+}
+
+void GG(float xp,float yp) {
+  for (float step=0; step<TAU; step+=PI/24) {
+    rotateX(step);
+    for (float i=0; i<PI; i+=PI/12) {
+      //strokeWeight(abs(sin(frameCount*0.01))*10);
+      //stroke(abs(sin(i)*255),abs(cos(i)*255),240,20);
+      stroke(0, map(i, 0, PI, 255, 0), 255-map(i, 0, PI,120, 255));
+      add_r+=PI/180;
+      strokeWeight(0.5);
+      rotateZ(i);
+      rotateX(step);
+      rotateY(step*i);
+      line(r*cos(i)*abs(sin(add_r*0.001))+xp,r*sin(i)*(sin(add_r*0.001))+yp,xp,yp);
+      strokeWeight(abs(sin(i+abs(cos(add_r*0.01+abs(cos(add_r*0.01+step*2)))*2)))*100);
+      x=r*cos(i)*abs(sin(add_r*0.001))+xp;
+      y=r*sin(i)*abs(sin(add_r*0.001))+yp;
+      point(x, y);
+    }
+  }
+}
