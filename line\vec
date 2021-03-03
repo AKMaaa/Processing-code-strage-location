@@ -1,0 +1,36 @@
+PImage img;
+
+
+void setup() {
+  size(700, 700);
+  img=loadImage("aaa1.png");
+  background(255);
+}
+
+void draw() {
+  noStroke();
+  rectMode(CENTER);
+  for (int i=0; i<1500; i++) {
+    //画面からランダムな場所を選択する
+    PVector location=new PVector(random(width), random(height));
+    //画像と対応した色を取得
+    color col=img.get(int(location.x), int(location.y));
+    fill(col, 15);
+    //明るさの計算
+    float brightness=red(col)+green(col)+blue(col);
+    //明るさから角度を決定
+    float angle=map(brightness, 0, 255*3, -PI/2.0, PI/2.0);
+    //明るさから四角形の長さを決定
+    float length1=0;
+    if (location.x>80&&location.x<620&&location.y<620&location.y>80) {
+      length1=map(brightness, 0, 255*3, 0, 10);
+    } else {
+      length1=map(brightness, 0, 255*3, 0, 50);
+    }
+    push();
+    translate(location.x, location.y);
+    rotate(angle*noise(i,i));
+    rect(0, 0, length1, 2);
+    pop();
+  }
+}
