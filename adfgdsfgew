@@ -1,0 +1,72 @@
+/* ref : http://ariga.dwcmedia.jp/ProcessingWeb/Trail8Fractal.html */
+/*ref : https://94.hatenadiary.jp/entry/2018/01/20/235439*/
+float scale=0.7;//枝の短くなる比率
+float angle=30;//枝の広がり
+float len=140;//枝の長さの初期値
+int nn=8;//枝分かれの段階
+
+void setup() {
+  size(500, 800);
+  colorMode(HSB);
+  background(0);
+  //blendMode(LIGHTEST);
+  colorMode(HSB, 360, 100, 100);
+  
+  sky();
+  
+  push();
+  translate(width/2, height);
+  fracTree(0, 0, len, 0, nn);
+  fracTree(-100, 0, len/2, 0,6);
+  pop();
+}
+
+void draw() {
+}
+
+void fracTree(float x1, float y1, float len, float rad, int step) {
+  /*
+ x1 : 枝の根元のx座標
+   y1 : 枝の根元のy座標
+   len : 枝の長さ
+   stand : 幹の方向からの枝の傾き
+   step : 再起回数
+   */
+
+  float x2=x1+len*sin(radians(rad));//枝先のx座標
+  float y2=y1-len*cos(radians(rad));//枝先のy座標
+  strokeWeight(step*0.7);
+  stroke(2.5);
+  line(x1, y1, x2, y2);
+  if (step>=1) {
+    float a=angle;
+    float rn=random(0,0.3);
+    fracTree(x2, y2, len*scale, rad-a*1.5*noise(x1*0.1, y1*0.03+rn), step-1);
+    fracTree(x2, y2, len*scale, rad+a*1.5*noise(x1*0.02-rn, y1*0.02), step-1);
+  }
+}
+
+float n1 = 0; //noiseのための変数その1
+float n2 = 0; //noiseのための変数その2
+float gate = 0;//閾値
+float gateMax = 100;//最大の閾値
+
+void sky() {
+  int s=1;
+  for (int i=0; i<=width; i+=s) {
+    for (int j=0; j<=height; j+=s) {
+      float seed=0.01;
+      float fx=i;
+      float fy=j;
+      float s_col=map(noise(i*seed+n1, j*seed+n2), 0, 1, gate, gateMax);
+      fill(188, s_col, 100);
+      noStroke();
+      rect(fx, fy, s, s);
+    }
+  }
+  n1+=0.01;
+}
+
+void keyPressed() {
+  if (key==ENTER) saveFrame("Wa_maeda1.png");
+}
